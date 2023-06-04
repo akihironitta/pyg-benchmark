@@ -1,0 +1,13 @@
+name: benchmark
+
+channels:
+  - pytorch
+  - conda-forge
+
+# Add optional dependencies for `pytorch-lightning` as needed.
+dependencies:
+  - python=3.11
+  - pip
+  - pytorch=2.0.1
+  - pip:
+    - flit_core>=3.2,<4
