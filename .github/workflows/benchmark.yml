@@ -63,7 +63,7 @@ jobs:
       env:
         ASV_RUN_OPTIONS: "--skip-existing-successful --parallel"
 
-    - name: Run benchmarks with PL master on pull request
+    - name: Run fewer benchmarks on PR
       # Run only a small set of benchmarks for sanity check.
       if: github.event_name == 'pull_request'
       # Give 10min for other steps. GitHub Actions allow 360 at the maximum.
@@ -91,3 +91,4 @@ jobs:
         git commit -m "Add results from $(git rev-parse --short $GITHUB_SHA)" && git push origin $GIT_BRANCH_RESULTS || echo "No new results to push :)"
       env:
         GIT_BRANCH_RESULTS: results
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
