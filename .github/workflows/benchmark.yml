@@ -37,6 +37,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        git branch
         python -m pip install -U pip
         python -m pip install asv
 
