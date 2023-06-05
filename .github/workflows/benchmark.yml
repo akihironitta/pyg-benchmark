@@ -59,7 +59,7 @@ jobs:
       timeout-minutes: 350
       run: |
         asv machine --machine "github-hosted-runner" --yes
-        asv run HASHFILE:version_list.txt $ASV_RUN_OPTIONS
+        asv run HASHFILE:commits.txt $ASV_RUN_OPTIONS
       env:
         ASV_RUN_OPTIONS: "--skip-existing-successful --parallel"
 
