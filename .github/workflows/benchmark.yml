@@ -21,7 +21,7 @@ on:
 # Do not run benchmarks in parallel to avoid any result collision
 concurrency:
   group: benchmark
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   benchmark:
