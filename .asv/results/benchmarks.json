@@ -1,0 +1,80 @@
+{
+    "bench_import.ImportBenchmark.timeraw_import": {
+        "code": "class ImportBenchmark:\n    def timeraw_import(self):\n        return \"import torch_geometric\"",
+        "min_run_count": 2,
+        "name": "bench_import.ImportBenchmark.timeraw_import",
+        "number": 1,
+        "param_names": [],
+        "params": [],
+        "repeat": 0,
+        "rounds": 2,
+        "sample_time": 0.01,
+        "timeout": 60.0,
+        "type": "time",
+        "unit": "seconds",
+        "version": "6bf9800913acbba040375b0422bc9d8ca4358900c1d15ac6aa3569db7998be98",
+        "warmup_time": -1
+    },
+    "bench_map.MapIndex.track_map_index_exclusive": {
+        "code": "class MapIndex:\n    def track_map_index_exclusive(self, output):\n        src, index = output\n        ts = benchmark(\n            funcs=[map_index],\n            func_names=['max_index'],\n            args=(src, index[:50_000], None, False),\n            num_steps=100,\n            num_warmups=50,\n        )\n        return ts[0][1]\n\n    def setup(self):\n        if not WITH_MAP_INDEX:\n            raise NotImplementedError\n\n    def setup_cache(self):\n        device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n        src = torch.randint(0, 100_000_000, (100_000, ), device=device)\n        index = src.unique()\n        return src, index",
+        "name": "bench_map.MapIndex.track_map_index_exclusive",
+        "param_names": [],
+        "params": [],
+        "setup_cache_key": "bench_map:67",
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "unit",
+        "version": "c5315027aaff9766d1089420bc0892904f7e5e03064eca09f71a7351c375546e"
+    },
+    "bench_map.MapIndex.track_map_index_inclusive": {
+        "code": "class MapIndex:\n    def track_map_index_inclusive(self, output):\n        src, index = output\n        ts = benchmark(\n            funcs=[map_index],\n            func_names=['map_index'],\n            args=(src, index, None, True),\n            num_steps=100,\n            num_warmups=50,\n        )\n        return ts[0][1]\n\n    def setup(self):\n        if not WITH_MAP_INDEX:\n            raise NotImplementedError\n\n    def setup_cache(self):\n        device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n        src = torch.randint(0, 100_000_000, (100_000, ), device=device)\n        index = src.unique()\n        return src, index",
+        "name": "bench_map.MapIndex.track_map_index_inclusive",
+        "param_names": [],
+        "params": [],
+        "setup_cache_key": "bench_map:67",
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "unit",
+        "version": "8d0ea0bfec0e3ab3a733d47e67b73a373d746c7ec97bb1fb26a12bb94cd8ab87"
+    },
+    "bench_map.TrivialMap.track_trivial_map_exclusive": {
+        "code": "class TrivialMap:\n    def track_trivial_map_exclusive(self, output):\n        src, index = output\n        ts = benchmark(\n            funcs=[trivial_map],\n            func_names=['trivial_map'],\n            args=(src, index[:50_000], None, False),\n            num_steps=100,\n            num_warmups=50,\n        )\n        return ts[0][1]\n\n    def setup_cache(self):\n        device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n        src = torch.randint(0, 100_000_000, (100_000, ), device=device)\n        index = src.unique()\n        return src, index",
+        "name": "bench_map.TrivialMap.track_trivial_map_exclusive",
+        "param_names": [],
+        "params": [],
+        "setup_cache_key": "bench_map:33",
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "unit",
+        "version": "518d059259482a61057653b029c947d55a9b9b7fd3d848f81439457127cccca0"
+    },
+    "bench_map.TrivialMap.track_trivial_map_inclusive": {
+        "code": "class TrivialMap:\n    def track_trivial_map_inclusive(self, output):\n        src, index = output\n        ts = benchmark(\n            funcs=[trivial_map],\n            func_names=['trivial_map'],\n            args=(src, index, None, True),\n            num_steps=100,\n            num_warmups=50,\n        )\n        return ts[0][1]\n\n    def setup_cache(self):\n        device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n        src = torch.randint(0, 100_000_000, (100_000, ), device=device)\n        index = src.unique()\n        return src, index",
+        "name": "bench_map.TrivialMap.track_trivial_map_inclusive",
+        "param_names": [],
+        "params": [],
+        "setup_cache_key": "bench_map:33",
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "unit",
+        "version": "2a666bce6396aa377c37bc13dc8976e20dafc5598ffb74adea62f39c70fc0780"
+    },
+    "bench_scatter.Scatter.track_scatter": {
+        "code": "class Scatter:\n    def track_scatter(self, output, n):\n        x, index, device, num_nodes = output\n        ts = benchmark(\n            funcs=[pytorch_scatter, own_scatter, optimized_scatter],\n            func_names=['PyTorch', 'torch_scatter', 'Optimized'],\n            args=(x, index, num_nodes, n),\n            num_steps=100 if device == 'cpu' else 1000,\n            num_warmups=50 if device == 'cpu' else 500,\n        )\n        return ts\n\n    def setup_cache(self):\n        device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n        num_nodes, num_edges = 1_000, 50_000\n        x = torch.randn(num_edges, 64, device=device)\n        index = torch.randint(num_nodes, (num_edges, ), device=device)\n        return x, index, device, num_nodes",
+        "name": "bench_scatter.Scatter.track_scatter",
+        "param_names": [
+            "param1"
+        ],
+        "params": [
+            [
+                "'sum'"
+            ]
+        ],
+        "setup_cache_key": "bench_scatter:56",
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "unit",
+        "version": "b35a85f416adc4f3ef4409cdce86a297a2a243687a61feca835364dce29afdb7"
+    },
+    "version": 2
+}
