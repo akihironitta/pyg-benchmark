@@ -45,7 +45,7 @@ def benchmark(
         backward (bool, optional): If set to :obj:`True`, will benchmark both
             forward and backward passes. (default: :obj:`False`)
     """
-    from tabulate import tabulate
+    # from tabulate import tabulate
 
     if num_steps <= 0:
         raise ValueError(f"'num_steps' must be a positive integer "
@@ -83,7 +83,7 @@ def benchmark(
                 t_forward += time.perf_counter() - t_start
 
             if backward:
-                # TODO Generalize this logic. This is also a bit unfair as the
+                # TODO: Generalize this logic. This is also a bit unfair as the
                 # concatenation leads to incorrectly measured backward speeds.
                 if isinstance(out, (tuple, list)):
                     out = torch.cat(out, dim=0)
@@ -100,16 +100,18 @@ def benchmark(
                 if i >= num_warmups:
                     t_backward += time.perf_counter() - t_start
 
-        ts.append([name, f'{t_forward:.4f}s'])
+        ts.append([name, t_forward])
         if backward:
-            ts[-1].append(f'{t_backward:.4f}s')
-            ts[-1].append(f'{t_forward + t_backward:.4f}s')
+            ts[-1].append(t_backward)
+            ts[-1].append(t_forward + t_backward)
 
     header = ['Name', 'Forward']
     if backward:
         header.extend(['Backward', 'Total'])
 
-    print(tabulate(ts, headers=header, tablefmt='psql'))
+    return ts  # [[func_name, t_forward], [func_name, t_forward]]
+
+    # print(tabulate(ts, headers=header, tablefmt='psql'))
 
 
 def get_func_name(func: Callable) -> str:

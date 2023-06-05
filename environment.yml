@@ -3,10 +3,12 @@ name: benchmark
 channels:
   - pytorch
   - conda-forge
+  - pyg
 
 dependencies:
   - python=3.11
   - pip
   - pytorch=2.0.1
+  - pandas
   - pip:
     - flit_core>=3.2,<4
