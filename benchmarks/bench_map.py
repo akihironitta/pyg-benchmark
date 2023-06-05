@@ -1,7 +1,13 @@
 import torch
 
 from benchmarks.utils import benchmark
-from torch_geometric.utils.map import map_index
+
+WITH_MAP_INDEX = True
+try:
+    from torch_geometric.utils.map import map_index
+except:
+    map_index = object
+    WITH_MAP_INDEX = False
 
 
 def trivial_map(src, index, max_index, inclusive):
@@ -22,7 +28,8 @@ def trivial_map(src, index, max_index, inclusive):
         return out[mask], mask
 
 
-class Map:
+class TrivialMap:
+
     def setup_cache(self):
         device = "cuda" if torch.cuda.is_available() else "cpu"
         src = torch.randint(0, 100_000_000, (100_000, ), device=device)
@@ -40,23 +47,35 @@ class Map:
         )
         return ts[0][1]
 
-    def track_map_index_inclusive(self, output):
-        src, index = output
-        ts = benchmark(
-            funcs=[map_index],
-            func_names=['map_index'],
-            args=(src, index, None, True),
-            num_steps=100,
-            num_warmups=50,
-        )
-        return ts[0][1]
-
     def track_trivial_map_exclusive(self, output):
         src, index = output
         ts = benchmark(
             funcs=[trivial_map],
             func_names=['trivial_map'],
             args=(src, index[:50_000], None, False),
+            num_steps=100,
+            num_warmups=50,
+        )
+        return ts[0][1]
+
+
+class MapIndex:
+    def setup(self):
+        if not WITH_MAP_INDEX:
+            raise NotImplementedError
+
+    def setup_cache(self):
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        src = torch.randint(0, 100_000_000, (100_000, ), device=device)
+        index = src.unique()
+        return src, index
+
+    def track_map_index_inclusive(self, output):
+        src, index = output
+        ts = benchmark(
+            funcs=[map_index],
+            func_names=['map_index'],
+            args=(src, index, None, True),
             num_steps=100,
             num_warmups=50,
         )

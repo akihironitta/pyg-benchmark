@@ -1,8 +1,14 @@
 import torch
-import torch_scatter
 from torch_geometric.utils import scatter
 
 from benchmarks.utils import benchmark
+
+WITH_TORCH_SCATTER = True
+try:
+    import torch_scatter
+except ImportError:
+    WITH_TORCH_SCATTER = False
+
 
 # Insights on GPU:
 # ================
