@@ -91,4 +91,3 @@ jobs:
         git commit -m "Add results from $(git rev-parse --short $GITHUB_SHA)" && git push origin $GIT_BRANCH_RESULTS || echo "No new results to push :)"
       env:
         GIT_BRANCH_RESULTS: results
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
