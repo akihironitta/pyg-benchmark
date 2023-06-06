@@ -8,8 +8,8 @@ on:
   # pull_request:
   #   branches:
   #     - dev
-  schedule:
-    - cron: '0 0,8,16 * * *'
+#   schedule:
+#     - cron: '0 0,8,16 * * *'
   workflow_dispatch:
     inputs:
       push:
