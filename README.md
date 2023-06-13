@@ -8,3 +8,6 @@
 - https://github.com/akihironitta/lightning-benchmarks
 - https://github.com/Stonesjtu/pytorch_memlab
 - https://github.com/pyg-team/pytorch_geometric/blob/master/test/utils/test_scatter.py
+- https://github.com/pythonprofilers/memory_profiler
+- https://github.com/bloomberg/memray
+- https://github.com/bloomberg/pytest-memray
