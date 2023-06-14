@@ -11,3 +11,7 @@
 - https://github.com/pythonprofilers/memory_profiler
 - https://github.com/bloomberg/memray
 - https://github.com/bloomberg/pytest-memray
+- https://pytorch.org/tutorials/recipes/recipes/benchmark.html
+- https://github.com/lutzroeder/netron
+- https://developer.nvidia.com/nsight-compute
+- https://developer.nvidia.com/nsight-systems
