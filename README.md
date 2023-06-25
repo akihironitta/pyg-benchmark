@@ -15,3 +15,4 @@
 - https://github.com/lutzroeder/netron
 - https://developer.nvidia.com/nsight-compute
 - https://developer.nvidia.com/nsight-systems
+- https://github.com/brendangregg/FlameGraph
